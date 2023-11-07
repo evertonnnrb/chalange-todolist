@@ -11,22 +11,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoService {
 
-    private TodoRepository repository;
+    private final TodoRepository repository;
 
-    public void save(Todo todo) {
-        repository.save(todo);
+    public Todo save(Todo todo) {
+        return repository.save(todo);
     }
 
     public List<Todo> getList() {
         return repository.findAll();
     }
 
-    public Todo update(Long id) {
-        Todo todo = repository.findById(id).orElseThrow();
-        return repository.save(todo);
+    public Todo getById(Long id) {
+        return repository.findById(id).orElseThrow();
     }
 
-    public void removeTodo(Long id) {
-        repository.delete(update(id));
+    public Todo update(Todo todo) {
+        Todo todoUpdate = getById(todo.getId());
+        return repository.save(todoUpdate);
+    }
+
+    public void removeTodo(Todo todo) {
+        repository.delete(todo);
     }
 }
