@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -18,7 +19,7 @@ public class TodoController {
     private final TodoService service;
 
     @PostMapping
-    public ResponseEntity<Todo> save(@RequestBody Todo todo) {
+    public ResponseEntity<Todo> save(@Valid @RequestBody Todo todo) {
         service.save(todo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
