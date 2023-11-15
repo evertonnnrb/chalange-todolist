@@ -3,6 +3,8 @@ package com.nrb.todo.service;
 import com.nrb.todo.model.Todo;
 import com.nrb.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public class TodoService {
     }
 
     public List<Todo> getList() {
-        return repository.findAll();
+        Sort sort = Sort.by("priority").descending()
+                .and(Sort.by("name").ascending());
+        return repository.findAll(sort);
     }
 
     public Todo getById(Long id) {
@@ -27,6 +31,7 @@ public class TodoService {
 
     public Todo update(Todo todo) {
         Todo todoUpdate = getById(todo.getId());
+        BeanUtils.copyProperties(todo, todoUpdate);
         return repository.save(todoUpdate);
     }
 
